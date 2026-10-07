@@ -1,0 +1,30 @@
+# EXEMPLO FICTÍCIO — mostra o formato. Seus dados de verdade ficam em dados/periodos/.
+semestre = "2026.2"
+inicio = "2026-08-10"
+fim = "2026-12-12"
+
+# Faltas que você pretende ter (vale para todas as disciplinas).
+[[ausencias]]
+motivo = "Congresso"
+de = "2026-10-26"
+ate = "2026-10-30"
+
+# Feriados (não contam como falta).
+[[feriados]]
+data = "2026-11-02"
+nome = "Finados"
+
+# Dias que talvez não tenham aula: entram só no "pior caso".
+[[feriados_incertos]]
+data = "2026-10-28"
+nome = "Dia do Servidor"
+
+# Faltas que você mesmo anotou (professor não faz chamada no SIGAA).
+[[faltas_manuais]]
+disciplina = "inglês"
+data = "2026-09-11"
+motivo = "Consulta médica"
+
+[[faltas_manuais]]
+disciplina = "ADM004"
+data = "2026-09-15"

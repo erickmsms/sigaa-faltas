@@ -1,0 +1,32 @@
+# Copie este arquivo para periodos/<semestre>.toml (ex.: 2027.1.toml) e preencha.
+
+semestre = "AAAA.S"
+inicio = "AAAA-MM-DD"   # primeiro dia de aula (aparece no portal: "10/08/2026 - 12/12/2026")
+fim = "AAAA-MM-DD"      # último dia de aula
+
+# Faltas previstas. Datas inclusivas; para um dia só, use de = ate.
+# [[ausencias]]
+# motivo = "Viagem"
+# de = "AAAA-MM-DD"
+# ate = "AAAA-MM-DD"
+
+# Feriados/dias sem aula do calendário acadêmico (não contam como falta).
+# [[feriados]]
+# data = "AAAA-MM-DD"
+# nome = "Finados"
+
+# Dias que talvez não tenham aula: entram só no "pior caso".
+# [[feriados_incertos]]
+# data = "AAAA-MM-DD"
+# nome = "Dia do Servidor"
+
+# Faltas que você mesmo anota, por disciplina — use para professores que não registram
+# chamada no SIGAA (ou que ainda não lançaram). Uma entrada por dia.
+#   disciplina = código (ex.: "MAT001") ou trecho do nome (ex.: "cálculo")
+#   aulas      = opcional; por padrão, todos os horários da disciplina naquele dia
+# Se o dia já aparecer como falta no SIGAA, não é contado duas vezes.
+# [[faltas_manuais]]
+# disciplina = "cálculo"
+# data = "AAAA-MM-DD"
+# aulas = 2
+# motivo = "Consulta médica"
