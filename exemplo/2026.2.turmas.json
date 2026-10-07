@@ -9,11 +9,19 @@
       "registra_chamada": true,
       "tem_plano": true,
       "faltas_registradas": 2,
-      "datas_faltas_registradas": ["2026-08-17"],
+      "datas_faltas_registradas": [
+        "2026-08-17"
+      ],
       "sem_aula": [],
       "eventos": [
-        {"data": "2026-10-28", "descricao": "1ª prova"},
-        {"data": "2026-12-02", "descricao": "2ª prova"}
+        {
+          "data": "2026-10-28",
+          "descricao": "1ª prova"
+        },
+        {
+          "data": "2026-12-02",
+          "descricao": "2ª prova"
+        }
       ]
     },
     {
@@ -24,10 +32,21 @@
       "registra_chamada": true,
       "tem_plano": false,
       "faltas_registradas": 14,
-      "datas_faltas_registradas": ["2026-08-25", "2026-09-08", "2026-09-10", "2026-09-22", "2026-10-01", "2026-09-29", "2026-09-03"],
+      "datas_faltas_registradas": [
+        "2026-08-25",
+        "2026-09-08",
+        "2026-09-10",
+        "2026-09-22",
+        "2026-10-01",
+        "2026-09-29",
+        "2026-09-03"
+      ],
       "sem_aula": [],
       "eventos": [
-        {"data": "2026-10-29", "descricao": "Entrega da lista 3"}
+        {
+          "data": "2026-10-29",
+          "descricao": "Entrega da lista 3"
+        }
       ]
     },
     {
@@ -51,7 +70,21 @@
       "tem_plano": true,
       "faltas_registradas": 0,
       "datas_faltas_registradas": [],
-      "sem_aula": ["2026-10-29"],
+      "sem_aula": [
+        "2026-10-29"
+      ],
+      "eventos": []
+    },
+    {
+      "codigo": "EST005",
+      "nome": "Estágio Supervisionado",
+      "ch_horas": 90,
+      "horario": "7M1234",
+      "registra_chamada": false,
+      "tem_plano": false,
+      "faltas_registradas": 0,
+      "datas_faltas_registradas": [],
+      "sem_aula": [],
       "eventos": []
     }
   ]

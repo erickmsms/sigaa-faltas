@@ -30,3 +30,9 @@ fim = "AAAA-MM-DD"      # último dia de aula
 # data = "AAAA-MM-DD"
 # aulas = 2
 # motivo = "Consulta médica"
+
+# Disciplinas sem aula ou sem controle de frequência (monitoria, estágio, TCC,
+# atividades complementares…). Ficam fora da análise de faltas.
+# [[sem_frequencia]]
+# disciplina = "MON001"   # código ou trecho do nome
+# motivo = "Só contabiliza horas de monitoria"

@@ -9,6 +9,8 @@
 | Inglês Instrumental | ❌ não registra | ✅ | 0 + 2 anotadas (11/09) | 2 (30/10) | 4 / 9 | **5 aulas** (2 dias) |
 | Introdução à Administração | ❌ não registra | ✅ | 0 + 2 anotadas (15/09) | 2 (27/10) | 4 / 18 | **14 aulas** (7 dias)<br>pior caso: 12 |
 
+**Fora da análise** (sem controle de frequência): Estágio Supervisionado (Horas cumpridas na empresa, sem aula)
+
 ## Alertas
 
 - 📌 **Cálculo 1**: 28/10 — 1ª prova (você estará ausente: Congresso).

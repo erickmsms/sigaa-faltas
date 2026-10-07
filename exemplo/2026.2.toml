@@ -28,3 +28,8 @@ motivo = "Consulta médica"
 [[faltas_manuais]]
 disciplina = "ADM004"
 data = "2026-09-15"
+
+# Disciplinas sem aula/sem controle de frequência: ficam fora da análise.
+[[sem_frequencia]]
+disciplina = "estágio"
+motivo = "Horas cumpridas na empresa, sem aula"

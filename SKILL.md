@@ -27,9 +27,9 @@ arquivos — você edita por ele.
 
 ## Primeiro uso
 
-Se `dados/` não existir, crie `dados/periodos/` e `dados/relatorios/` e siga o modo C.
+Se `dados/` não existir, crie `dados/periodos/` e `dados/relatorios/` e siga o modo D.
 
-## Três modos de uso
+## Modos de uso
 
 ### A) Anotar uma falta que já aconteceu
 
@@ -41,7 +41,7 @@ em física"), principalmente em disciplinas cujo professor não registra chamada
    `disciplina` (código como `MAT001` ou trecho do nome), `data`, e opcionalmente
    `aulas` (padrão: todos os horários da disciplina naquele dia da semana) e `motivo`.
    Uma entrada por dia.
-2. Rode o script (passo 5 do modo C) e confira que a falta entrou: ela aparece como
+2. Rode o script (passo 5 do modo D) e confira que a falta entrou: ela aparece como
    "+ N anotadas" na coluna de faltas já tidas. Se aparecer um alerta ❓ (disciplina
    ambígua ou dia sem aula), corrija a entrada.
 3. Mostre ao usuário como ficou a disciplina.
@@ -58,10 +58,27 @@ Se o usuário quer registrar uma ausência futura ("vou faltar dia X", "vou viaj
    inclusivas; para um dia só use `de = ate`.
    Ausências que valem só para uma disciplina vão como `[[faltas_manuais]]` (modo A),
    mesmo que sejam futuras.
-3. Se já existe o `.turmas.json` do semestre, rode o script (passo 5 do modo C) para mostrar
+3. Se já existe o `.turmas.json` do semestre, rode o script (passo 5 do modo D) para mostrar
    o impacto sem entrar no SIGAA de novo. Se não existe, ofereça o relatório completo.
 
-### C) Relatório completo (entra no SIGAA)
+### C) Tirar uma disciplina da análise
+
+Algumas disciplinas não têm aula nem controle de frequência (monitoria que só contabiliza
+horas, estágio, TCC, atividades complementares…). Quando o usuário disser algo como
+"monitoria não tem aula, pode desconsiderar":
+
+1. Acrescente no `.toml` do semestre:
+
+   ```toml
+   [[sem_frequencia]]
+   disciplina = "IF791"        # código ou trecho do nome
+   motivo = "Só contabiliza horas de monitoria"
+   ```
+
+2. Rode o script: a disciplina sai da tabela e dos alertas e aparece só na linha
+   "Fora da análise".
+
+### D) Relatório completo (entra no SIGAA)
 
 1. **Período.** Se não existir `dados/periodos/<semestre>.toml` para o semestre atual,
    copie `modelo-periodo.toml`, preencha `semestre`, `inicio`, `fim` (datas que aparecem
@@ -87,6 +104,9 @@ Se o usuário quer registrar uma ausência futura ("vou faltar dia X", "vou viaj
    - **Alunos → Frequência**: tabela `Data | Situação` (`Presente`, `N Falta(s)`,
      `Não Registrada`). Se aparecer "A frequência ainda não foi lançada" ou não houver
      nenhum registro, o professor **não registra chamada**.
+   - Se a disciplina parecer não ter aula (monitoria, estágio, TCC, atividades
+     complementares, sem horário ou sem tópicos de aula), pergunte ao usuário se ela deve
+     ficar fora da análise (modo C).
    - Dicas de navegação: o SIGAA é lento — depois de cada clique espere ~3 s antes de ler
      a página. Os itens do menu lateral (Plano de Curso, Frequência) só ficam clicáveis
      depois de expandir o grupo ("Turma" ou "Alunos").
@@ -113,6 +133,7 @@ Se o usuário quer registrar uma ausência futura ("vou faltar dia X", "vou viaj
 6. **Responda ao usuário** com a tabela e os alertas, deixando explícito:
    - quais disciplinas **não registram chamada** e quais **não têm plano de curso** —
      lembre o usuário de te avisar quando faltar nessas (modo A);
+   - disciplinas que ficaram fora da análise (sem frequência);
    - disciplinas em risco (sobra menos de 1 dia de aula);
    - provas/apresentações que caem em dias de falta prevista;
    - premissas (feriados considerados, datas "sem aula" que podem mudar).
@@ -121,6 +142,7 @@ Se o usuário quer registrar uma ausência futura ("vou faltar dia X", "vou viaj
 
 - Aula = 50 min. Total de aulas = CH em horas × 60 / 50 (60h → 72 aulas; 45h → 54).
 - Frequência mínima 75% ⇒ máximo de faltas = total − ⌈0,75 × total⌉ (72 → 18; 54 → 13).
+- Disciplinas em `[[sem_frequencia]]` não entram na conta.
 - Faltas já tidas = faltas lançadas no SIGAA + `[[faltas_manuais]]` cujas datas não
   estão lançadas no SIGAA.
 - Faltas futuras = horários do código de horário que caem nas datas das `[[ausencias]]`,

@@ -31,6 +31,9 @@ Esta ferramenta faz tudo isso por você e avisa, por exemplo:
   anotar suas faltas, e a ferramenta te ajuda);
 - ⚪ quais disciplinas **não têm plano de curso** cadastrado.
 
+Disciplinas que não têm aula (monitoria que só conta horas, estágio, TCC…) podem ficar
+de fora da conta. É só avisar.
+
 ## Como é o resultado
 
 Exemplo com dados **fictícios** (alguém que vai a um congresso de 26/10 a 30/10):
@@ -45,6 +48,8 @@ Exemplo com dados **fictícios** (alguém que vai a um congresso de 26/10 a 30/1
 **Alertas**
 - 🔴 **Física Geral 1**: você fica exatamente no limite. Qualquer falta a mais reprova.
 - 📌 **Cálculo 1**: 28/10 é dia da 1ª prova, e você estará no congresso.
+
+**Fora da análise:** Estágio Supervisionado (não tem aula).
 
 O relatório completo do exemplo está em [`exemplo/relatorio.md`](exemplo/relatorio.md).
 
@@ -89,6 +94,7 @@ git clone https://github.com/erickmsms/sigaa-faltas.git ~/.claude/skills/sigaa-f
 | *"Vou viajar de 10/11 a 20/11, quantas faltas ainda posso ter?"* | Ele anota a viagem e calcula quanto sobra em cada disciplina. |
 | *"Vou faltar sexta que vem."* | Anota a falta prevista e mostra o impacto. |
 | *"Faltei Cálculo hoje."* | Anota a falta. Use isso principalmente nas disciplinas em que o professor não faz chamada no SIGAA. |
+| *"Monitoria não tem aula, pode desconsiderar."* | Tira a disciplina da conta. Serve para monitoria, estágio, TCC e outras disciplinas sem aula. |
 | *"Começou o semestre novo, faz o relatório."* | Ele cria o semestre novo e faz tudo de novo. |
 
 Na primeira vez de cada semestre ele precisa entrar no SIGAA. Depois disso, quando você
@@ -180,6 +186,10 @@ ate = "2026-11-20"
 disciplina = "cálculo" # código (MAT001) ou parte do nome
 data = "2026-09-15"
 aulas = 2              # opcional
+
+[[sem_frequencia]]     # disciplina sem aula: fica fora da conta
+disciplina = "estágio"
+motivo = "Horas cumpridas na empresa"
 ```
 
 Sugestões e correções são bem-vindas via *issues* e *pull requests*.

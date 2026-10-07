@@ -50,7 +50,8 @@ def normalizar(texto):
 def achar_turma(chave, turmas):
     """Acha a turma pelo código (ex.: MAT001) ou por um trecho do nome (ex.: "cálculo")."""
     k = normalizar(chave)
-    achadas = [t for t in turmas if normalizar(t.get("codigo", "")) == k] or               [t for t in turmas if k in normalizar(t["nome"])]
+    achadas = [t for t in turmas if normalizar(t.get("codigo", "")) == k] \
+        or [t for t in turmas if k in normalizar(t["nome"])]
     return achadas[0] if len(achadas) == 1 else None
 
 
@@ -97,7 +98,18 @@ def main():
             continue
         manuais[t["nome"]].append((ler_data(fm["data"]), fm.get("aulas"), fm.get("motivo", "")))
 
+    # Disciplinas sem aula/sem controle de frequência (monitoria, estágio, TCC…): ficam de fora.
+    fora = {}  # nome da turma -> motivo
+    for sf in periodo.get("sem_frequencia", []):
+        t = achar_turma(sf["disciplina"], turmas)
+        if t is None:
+            alertas.append(f"❓ \"{sf['disciplina']}\" em sem_frequencia não encontrada (ou ambígua).")
+            continue
+        fora[t["nome"]] = sf.get("motivo", "")
+
     for t in turmas:
+        if t["nome"] in fora:
+            continue
         por_dia = aulas_por_dia(t["horario"])
         total = round(t["ch_horas"] * 60 / MINUTOS_AULA)
         limite = total - math.ceil(FREQ_MINIMA * total)
@@ -179,6 +191,9 @@ def main():
     print("| Disciplina | Chamada | Plano | Faltas já tidas (SIGAA + anotadas) | Faltas previstas (datas) | Total / limite | Ainda pode faltar |")
     print("|---|---|---|---|---|---|---|")
     print("\n".join(linhas))
+    if fora:
+        print("\n**Fora da análise** (sem controle de frequência): " + "; ".join(
+            f"{nome} ({motivo})" if motivo else nome for nome, motivo in fora.items()))
     if alertas:
         print("\n## Alertas\n")
         print("\n".join(f"- {a}" for a in alertas))
