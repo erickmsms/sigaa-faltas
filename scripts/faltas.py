@@ -133,8 +133,9 @@ def main():
         previstas, extras_pior = [], []
         for d in sorted(ausente):
             n = por_dia.get(d.weekday(), 0)
-            # Ausências passadas (ou já lançadas no SIGAA) entram nas faltas lançadas, exceto se o professor não registra.
-            if not n or (d < hoje and registra) or d in feriados or d in datas_anotadas or d in ja_lancadas:
+            # Dias já lançados no SIGAA (ou anotados) já estão nas faltas tidas; os demais contam aqui,
+            # inclusive os que já passaram mas o professor ainda não lançou.
+            if not n or d in feriados or d in datas_anotadas or d in ja_lancadas:
                 continue
             if d in sem_aula or d in incertos:
                 extras_pior.append((d, n))

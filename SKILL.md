@@ -147,7 +147,8 @@ horas, estágio, TCC, atividades complementares…). Quando o usuário disser al
   estão lançadas no SIGAA.
 - Faltas futuras = horários do código de horário que caem nas datas das `[[ausencias]]`,
   dentro de `inicio`–`fim`, menos `[[feriados]]`, menos `sem_aula` da disciplina e menos
-  dias já anotados como falta manual.
+  dias já lançados no SIGAA (`datas_faltas_registradas`) ou anotados como falta manual.
+  Dias de ausência que já passaram mas o professor ainda não lançou continuam contando.
 - "Pior caso" = conta também as datas `sem_aula` e os `[[feriados_incertos]]`.
 - Os totais "Aulas (Ministradas/Total)" da página da turma às vezes diferem da CH;
   o SIGAA usa a CH para o percentual, então use a CH.
