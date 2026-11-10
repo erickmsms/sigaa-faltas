@@ -157,14 +157,15 @@ def main():
         lancadas_txt = str(t.get("faltas_registradas", 0))
         if anotadas:
             lancadas_txt += f" + {n_anot} anotadas ({', '.join(fmt(d) for d, _ in anotadas)})"
-        sobra_txt = f"**{sobra} aulas** ({aprox}{dias_sobra} dia{'s' if dias_sobra != 1 else ''})"
+        sobra_txt = f"**{aprox}{dias_sobra} dia{'s' if dias_sobra != 1 else ''}** ({sobra} aula{'s' if abs(sobra) != 1 else ''})"
         if sobra_pior != sobra:
-            sobra_txt += f"<br>pior caso: {sobra_pior}"
-        linhas.append(
-            f"| {nome} | {'✅' if registra else '❌ não registra'} | "
+            dias_pior = max(sobra_pior, 0) // maior_dia
+            sobra_txt += f"<br>pior caso: {aprox}{dias_pior} dia{'s' if dias_pior != 1 else ''} ({sobra_pior} aulas)"
+        # Ordena por dias que ainda cabem (menos folga primeiro); desempata pelas aulas.
+        linhas.append(((dias_sobra, sobra), f"| {nome} | {'✅' if registra else '❌ não registra'} | "
             f"{'✅' if t.get('tem_plano', True) else '❌ sem plano'} | {lancadas_txt} | "
             f"{n_prev} ({datas_txt}) | {lancadas + n_prev} / {limite} | {sobra_txt} |"
-        )
+        ))
 
         if sobra < 0:
             alertas.append(f"🔴 **{nome}**: reprova por falta com as ausências previstas ({lancadas + n_prev} > {limite}).")
@@ -191,7 +192,7 @@ def main():
             for a in periodo["ausencias"]) + "\n")
     print("| Disciplina | Chamada | Plano | Faltas já tidas (SIGAA + anotadas) | Faltas previstas (datas) | Total / limite | Ainda pode faltar |")
     print("|---|---|---|---|---|---|---|")
-    print("\n".join(linhas))
+    print("\n".join(linha for _, linha in sorted(linhas, key=lambda x: x[0])))
     if fora:
         print("\n**Fora da análise** (sem controle de frequência): " + "; ".join(
             f"{nome} ({motivo})" if motivo else nome for nome, motivo in fora.items()))
