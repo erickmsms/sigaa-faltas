@@ -62,6 +62,10 @@ def datas_entre(inicio, fim):
         d += timedelta(days=1)
 
 
+def plural(n, palavra):
+    return f"{n} {palavra}{'s' if abs(n) != 1 else ''}"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("periodo")
@@ -87,6 +91,7 @@ def main():
                 ausente[d] = a.get("motivo", "")
 
     linhas, alertas, premissas = [], [], []
+    panorama = []  # linhas da tabela "Até o fim da disciplina"
 
     # Faltas que o próprio aluno anotou (professor não registra, ou ainda não lançou).
     manuais = defaultdict(list)  # código/nome da turma -> [(data, aulas|None, motivo)]
@@ -185,6 +190,37 @@ def main():
             motivo = incertos.get(d) or "não aparece no cronograma"
             premissas.append(f"{nome}: {fmt(d)} não contado ({motivo}); se houver aula, +{n} falta(s).")
 
+        # Até o fim: última aula do cronograma (ou fim do semestre, se não houver cronograma),
+        # aulas que ainda vão acontecer a partir de amanhã, próxima avaliação e término.
+        eventos = sorted((ler_data(ev["data"]), ev["descricao"]) for ev in t.get("eventos", []))
+        if t.get("ultima_aula"):
+            ultima = ler_data(t["ultima_aula"])
+            ultima_txt = fmt(ultima)
+        else:
+            ultima = fim
+            ultima_txt = f"{fmt(fim)}?"
+            premissas.append(f"{nome}: sem cronograma no SIGAA; usei o fim do semestre ({fmt(fim)}) como última aula.")
+        restantes = [(d, por_dia[d.weekday()]) for d in datas_entre(hoje + timedelta(days=1), ultima)
+                     if d.weekday() in por_dia and d not in feriados and d not in sem_aula]
+        n_rest = sum(n for _, n in restantes)
+        if not t.get("ultima_aula") and restantes:
+            ultima_txt = f"{fmt(restantes[-1][0])}?"
+        proxima = next(((d, desc) for d, desc in eventos if d >= hoje), None)
+        if t.get("fim_disciplina"):
+            termino = (ler_data(t["fim_disciplina"]), t.get("fim_descricao", ""))
+        elif eventos and eventos[-1][0] >= ultima:
+            termino = eventos[-1]
+        else:
+            termino = (ultima, "última aula" if t.get("ultima_aula") else "fim do semestre")
+        if n_rest and sobra >= n_rest:
+            folga_txt = "todas as restantes"
+        else:
+            folga_txt = f"{aprox}{plural(dias_sobra, 'dia')} ({plural(sobra, 'aula')})"
+        panorama.append(((dias_sobra, sobra),
+            f"| {nome} | {ultima_txt} | {plural(len(restantes), 'dia')} ({plural(n_rest, 'aula')}) | "
+            f"{folga_txt} | {f'{fmt(proxima[0])}{" (hoje)" if proxima[0] == hoje else ""} — {proxima[1]}' if proxima else '—'} | "
+            f"**{fmt(termino[0])}**{f' ({termino[1]})' if termino[1] else ''} |"))
+
     print(f"# Relatório de faltas — {periodo['semestre']} (gerado em {hoje.strftime('%d/%m/%Y')})\n")
     if ausente:
         print("**Ausências previstas:** " + "; ".join(
@@ -193,6 +229,11 @@ def main():
     print("| Disciplina | Chamada | Plano | Faltas já tidas (SIGAA + anotadas) | Faltas previstas (datas) | Total / limite | Ainda pode faltar |")
     print("|---|---|---|---|---|---|---|")
     print("\n".join(linha for _, linha in sorted(linhas, key=lambda x: x[0])))
+    if panorama:
+        print(f"\n## Até o fim da disciplina\n")
+        print("| Disciplina | Última aula | Aulas restantes (a partir de amanhã) | Ainda pode faltar | Próxima avaliação | Termina em |")
+        print("|---|---|---|---|---|---|")
+        print("\n".join(linha for _, linha in sorted(panorama, key=lambda x: x[0])))
     if fora:
         print("\n**Fora da análise** (sem controle de frequência): " + "; ".join(
             f"{nome} ({motivo})" if motivo else nome for nome, motivo in fora.items()))
@@ -202,6 +243,8 @@ def main():
     print("\n## Premissas\n")
     print("- Aula = 50 min; limite = 25% das aulas da CH (60h → 18 faltas; 45h → 13).")
     print("- \"Dias\" = dias de aula inteiros que ainda cabem (no dia com mais horários).")
+    print("- Aulas restantes = dias do horário da disciplina entre amanhã e a última aula, sem feriados.")
+    print("- \"Todas as restantes\" = a frequência permite faltar todas as aulas que faltam (provas continuam valendo nota).")
     for d, nome in sorted(feriados.items()):
         print(f"- {fmt(d)} ({nome}) tratado como feriado.")
     for p in premissas:

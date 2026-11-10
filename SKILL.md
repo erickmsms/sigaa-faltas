@@ -118,7 +118,17 @@ horas, estágio, TCC, atividades complementares…). Quando o usuário disser al
    - `tem_plano`: `false` se o Plano de Curso não existe.
    - `sem_aula`: datas **dentro das ausências previstas** em que o horário semanal teria aula
      mas o cronograma do professor não lista aula. Deixe vazio se não há cronograma.
-   - `eventos`: provas, apresentações, entregas etc. com data (do cronograma/avaliações).
+   - `eventos`: provas, apresentações, entregas etc. com data. Junte o quadro "Avaliações" da
+     página principal, a tabela "Avaliações" do Plano de Curso e os itens avaliativos do
+     cronograma (E.E., 2ª chamada, prova final, apresentações, checkpoints).
+   - `ultima_aula`: data da última aula regular (antes de 2ª chamada/prova final), tirada do
+     cronograma. Ele pode estar na **página principal** (tabela de datas ou tópicos
+     `Assunto (dd/mm - dd/mm)`) ou no **Plano de Curso** ("Cronograma de Aulas"); use o mais
+     detalhado. Se o cronograma for uma faixa (ex.: "Projeto final 26/10 – 30/11"), use o fim
+     da faixa. Se a disciplina não tiver cronograma, omita o campo: o script usa o fim do
+     semestre e marca a data com "?".
+   - `fim_disciplina` / `fim_descricao` (opcionais): só se o término não for o último evento
+     (o script usa a data mais tardia entre `eventos` e `ultima_aula`).
 
    Depois rode:
 
@@ -136,6 +146,8 @@ horas, estágio, TCC, atividades complementares…). Quando o usuário disser al
    - disciplinas que ficaram fora da análise (sem frequência);
    - disciplinas em risco (sobra menos de 1 dia de aula);
    - provas/apresentações que caem em dias de falta prevista;
+   - a tabela "Até o fim da disciplina" (última aula, aulas restantes, próxima avaliação e
+     data de término) — destaque quando a frequência já permite faltar todas as aulas restantes;
    - premissas (feriados considerados, datas "sem aula" que podem mudar).
 
 ## Regras de cálculo (UFPE)
@@ -150,5 +162,7 @@ horas, estágio, TCC, atividades complementares…). Quando o usuário disser al
   dias já lançados no SIGAA (`datas_faltas_registradas`) ou anotados como falta manual.
   Dias de ausência que já passaram mas o professor ainda não lançou continuam contando.
 - "Pior caso" = conta também as datas `sem_aula` e os `[[feriados_incertos]]`.
+- Aulas restantes = dias do horário da disciplina entre amanhã e `ultima_aula` (ou o fim do
+  semestre), sem `[[feriados]]` e sem `sem_aula`.
 - Os totais "Aulas (Ministradas/Total)" da página da turma às vezes diferem da CH;
   o SIGAA usa a CH para o percentual, então use a CH.

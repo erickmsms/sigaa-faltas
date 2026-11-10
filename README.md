@@ -29,7 +29,10 @@ Esta ferramenta faz tudo isso por você e avisa, por exemplo:
 - 📌 se alguma **prova ou apresentação** cai num dia em que você vai faltar;
 - ⚪ quais professores **não registram chamada** no SIGAA (nessas, você mesmo precisa
   anotar suas faltas, e a ferramenta te ajuda);
-- ⚪ quais disciplinas **não têm plano de curso** cadastrado.
+- ⚪ quais disciplinas **não têm plano de curso** cadastrado;
+- 🗓️ quando cada disciplina **termina**: a última aula, quantas aulas ainda faltam acontecer,
+  a próxima avaliação e a data da prova final (lidas do cronograma da página principal ou do
+  plano de curso).
 
 Disciplinas que não têm aula (monitoria que só conta horas, estágio, TCC…) podem ficar
 de fora da conta. É só avisar.
@@ -49,6 +52,16 @@ vêm ordenadas da que tem menos folga para a que tem mais:
 **Alertas**
 - 🔴 **Física Geral 1**: você fica exatamente no limite. Qualquer falta a mais reprova.
 - 📌 **Cálculo 1**: 28/10 é dia da 1ª prova, e você estará no congresso.
+
+**Até o fim da disciplina**
+
+| Disciplina | Última aula | Aulas restantes | Ainda pode faltar | Próxima avaliação | Termina em |
+|---|---|---|---|---|---|
+| Física Geral 1 | 10/12? | 19 dias (38 aulas) | 0 dias (0 aulas) | 29/10 — Entrega da lista 3 | **12/12** (fim do semestre) |
+| Cálculo 1 | 02/12 | 16 dias (32 aulas) | 7 dias (14 aulas) | 28/10 — 1ª prova | **02/12** (2ª prova) |
+
+O "?" indica que a disciplina não tem cronograma no SIGAA, então a data é uma estimativa
+pelo fim do semestre.
 
 **Fora da análise:** Estágio Supervisionado (não tem aula).
 

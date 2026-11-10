@@ -22,7 +22,8 @@
           "data": "2026-12-02",
           "descricao": "2ª prova"
         }
-      ]
+      ],
+      "ultima_aula": "2026-12-02"
     },
     {
       "codigo": "FIS002",
@@ -73,7 +74,8 @@
       "sem_aula": [
         "2026-10-29"
       ],
-      "eventos": []
+      "eventos": [],
+      "ultima_aula": "2026-12-03"
     },
     {
       "codigo": "EST005",
