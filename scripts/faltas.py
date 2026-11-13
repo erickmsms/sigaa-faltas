@@ -196,11 +196,28 @@ def main():
         if t.get("ultima_aula"):
             ultima = ler_data(t["ultima_aula"])
             ultima_txt = fmt(ultima)
+        elif t.get("aulas_total") and t.get("aulas_ministradas") is not None:
+            # Sem cronograma: usa o "Aulas (Ministradas/Total)" da página da turma e distribui
+            # as aulas que faltam nos próximos dias do horário (a partir de hoje).
+            falta_dar = max(t["aulas_total"] - t["aulas_ministradas"], 0)
+            ultima, acumulado = hoje, 0
+            for d in datas_entre(hoje, fim):
+                if acumulado >= falta_dar:
+                    break
+                if d.weekday() in por_dia and d not in feriados and d not in sem_aula:
+                    acumulado += por_dia[d.weekday()]
+                    ultima = d
+            ultima_txt = f"{fmt(ultima)}?"
+            premissas.append(f"{nome}: sem cronograma; o SIGAA mostra {t['aulas_ministradas']} de "
+                             f"{t['aulas_total']} aulas ministradas, então faltam {falta_dar} (contando a partir de hoje).")
         else:
             ultima = fim
             ultima_txt = f"{fmt(fim)}?"
             premissas.append(f"{nome}: sem cronograma no SIGAA; usei o fim do semestre ({fmt(fim)}) como última aula.")
-        restantes = [(d, por_dia[d.weekday()]) for d in datas_entre(hoje + timedelta(days=1), ultima)
+        primeiro = hoje + timedelta(days=1)
+        if not t.get("ultima_aula") and t.get("aulas_total") and t.get("aulas_ministradas") is not None:
+            primeiro = hoje
+        restantes = [(d, por_dia[d.weekday()]) for d in datas_entre(primeiro, ultima)
                      if d.weekday() in por_dia and d not in feriados and d not in sem_aula]
         n_rest = sum(n for _, n in restantes)
         if not t.get("ultima_aula") and restantes:
@@ -211,7 +228,8 @@ def main():
         elif eventos and eventos[-1][0] >= ultima:
             termino = eventos[-1]
         else:
-            termino = (ultima, "última aula" if t.get("ultima_aula") else "fim do semestre")
+            termino = (ultima, "última aula" if t.get("ultima_aula")
+                       else "estimativa pelo SIGAA" if t.get("aulas_total") else "fim do semestre")
         if n_rest and sobra >= n_rest:
             folga_txt = "todas as restantes"
         else:

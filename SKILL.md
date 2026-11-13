@@ -127,6 +127,11 @@ horas, estágio, TCC, atividades complementares…). Quando o usuário disser al
      detalhado. Se o cronograma for uma faixa (ex.: "Projeto final 26/10 – 30/11"), use o fim
      da faixa. Se a disciplina não tiver cronograma, omita o campo: o script usa o fim do
      semestre e marca a data com "?".
+   - `aulas_ministradas` / `aulas_total`: o quadro "Andamento das Aulas — Aulas
+     (Ministradas/Total)" da página principal. Sem cronograma, o script usa esses números para
+     estimar quantas aulas faltam e quando é a última (marcada com "?").
+   - Feriados: use só o que o usuário informar ou o calendário acadêmico do SIGAA
+     (Ensino → Calendário Acadêmico). Não adicione feriados por conta própria.
    - `fim_disciplina` / `fim_descricao` (opcionais): só se o término não for o último evento
      (o script usa a data mais tardia entre `eventos` e `ultima_aula`).
 
